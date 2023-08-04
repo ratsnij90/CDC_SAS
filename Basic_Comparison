@@ -1,0 +1,19 @@
+
+
+DATA df0;
+SET df1(FIRSTOBS=2);
+RUN;
+
+DATA df1;
+SET df2(RENAME=(A=지역명 B=보건소명_의뢰기관 C=의뢰일 D=성명 E=생년월일 F=검체종류 G=증상유무 H=검사기관_수탁기관 I=판정결과 J=판정결과통보일 K=검사방법));
+RUN;
+
+DATA df3;
+SET df2;
+KEY=COMPRESS(CATS(hc, UPCASE(name), SUBSTR(bd, 1, 6), ttype, tc, td, tway));
+RUN;
+
+PROC EXPORT data=df
+outfile="C:\정석진업무폴더\결과\2023-00-00\결과.xlsx"
+DBMS=xlsx REPLACE;
+RUN;
